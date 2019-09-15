@@ -51,20 +51,20 @@ steps:
     working_directory: ./
     environment:
       - CHART_REF=example-voting-app
-      - RELEASE_NAME='${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_PULL_REQUEST_NUMBER}}-${{CF_REPO_NAME}}'
-      - KUBE_CONTEXT=${{KUBE_CONTEXT}}
-      - NAMESPACE=${{KUBE_NAMESPACE}}
+      - RELEASE_NAME='${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_PULL_REQUEST_NUMBER}}-eva'
+      - KUBE_CONTEXT=${{PR_KUBE_CONTEXT}}
+      - NAMESPACE=${{PR_KUBE_NAMESPACE}}
       - DEBUG_CHART=true
       - CMD_PS=-f helm_vars/example-voting-app/pull-requests/worker/secrets.yaml
       - value_result_image_repository=r.cfcr.io/${{CF_ACCOUNT}}/example-voting-app/result
       - value_result_image_tag=${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_SHORT_REVISION}}
-      - value_result_image_pullSecret=codefresh-generated-r.cfcr.io-cfcr-${{KUBE_NAMESPACE}}
+      - value_result_image_pullSecret=codefresh-generated-r.cfcr.io-cfcr-${{PR_KUBE_NAMESPACE}}
       - value_vote_image_repository=r.cfcr.io/${{CF_ACCOUNT}}/example-voting-app/vote
       - value_vote_image_tag=${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_SHORT_REVISION}}
-      - value_vote_image_pullSecret=codefresh-generated-r.cfcr.io-cfcr-${{KUBE_NAMESPACE}}
+      - value_vote_image_pullSecret=codefresh-generated-r.cfcr.io-cfcr-${{PR_KUBE_NAMESPACE}}
       - value_worker_image_repository=r.cfcr.io/${{CF_ACCOUNT}}/example-voting-app/worker
       - value_worker_image_tag=${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_SHORT_REVISION}}
-      - value_worker_image_pullSecret=codefresh-generated-r.cfcr.io-cfcr-${{KUBE_NAMESPACE}}
+      - value_worker_image_pullSecret=codefresh-generated-r.cfcr.io-cfcr-${{PR_KUBE_NAMESPACE}}
     commands:
       - echo -e "${{GPG_SEC}}" > mygpgkey_sec.asc
       - gpg --import --allow-secret-key-import mygpgkey_sec.asc
@@ -108,20 +108,20 @@ steps:
       - CHART_REF=example-voting-app
       - CHART_REPO_URL=cm://h.cfcr.io/${{CF_ACCOUNT}}/default
       - CHART_VERSION=${{CF_RELEASE_TAG}}
-      - RELEASE_NAME=staging-example-voting-app
-      - KUBE_CONTEXT=${{KUBE_CONTEXT}}
-      - NAMESPACE=${{KUBE_NAMESPACE}}
+      - RELEASE_NAME=staging-eva
+      - KUBE_CONTEXT=${{STAGING_KUBE_CONTEXT}}
+      - NAMESPACE=${{STAGING_KUBE_NAMESPACE}}
       - DEBUG_CHART=true
       - CMD_PS=-f /codefresh/volume/example-voting-app/helm_vars/example-voting-app/staging/worker/secrets.yaml
       - value_result_image_repository=r.cfcr.io/${{CF_ACCOUNT}}/example-voting-app/result
       - value_result_image_tag=master-${{CF_SHORT_REVISION}}
-      - value_result_image_pullSecret=codefresh-generated-r.cfcr.io-cfcr-${{KUBE_NAMESPACE}}
+      - value_result_image_pullSecret=codefresh-generated-r.cfcr.io-cfcr-${{STAGING_KUBE_NAMESPACE}}
       - value_vote_image_repository=r.cfcr.io/${{CF_ACCOUNT}}/example-voting-app/vote
       - value_vote_image_tag=master-${{CF_SHORT_REVISION}}
-      - value_vote_image_pullSecret=codefresh-generated-r.cfcr.io-cfcr-${{KUBE_NAMESPACE}}
+      - value_vote_image_pullSecret=codefresh-generated-r.cfcr.io-cfcr-${{STAGING_KUBE_NAMESPACE}}
       - value_worker_image_repository=r.cfcr.io/${{CF_ACCOUNT}}/example-voting-app/worker
       - value_worker_image_tag=master-${{CF_SHORT_REVISION}}
-      - value_worker_image_pullSecret=codefresh-generated-r.cfcr.io-cfcr-${{KUBE_NAMESPACE}}
+      - value_worker_image_pullSecret=codefresh-generated-r.cfcr.io-cfcr-${{STAGING_KUBE_NAMESPACE}}
     commands:
       - echo -e "${{GPG_SEC}}" > mygpgkey_sec.asc
       - gpg --import --allow-secret-key-import mygpgkey_sec.asc
@@ -159,21 +159,21 @@ steps:
       - CHART_REF=example-voting-app
       - CHART_REPO_URL=cm://h.cfcr.io/${{CF_ACCOUNT}}/default
       - CHART_VERSION=${{CF_RELEASE_TAG}}
-      - RELEASE_NAME=production-example-voting-app
-      - KUBE_CONTEXT=${{KUBE_CONTEXT}}
-      - NAMESPACE=${{KUBE_NAMESPACE}}
+      - RELEASE_NAME=production-eva
+      - KUBE_CONTEXT=${{PRODUCTION_KUBE_CONTEXT}}
+      - NAMESPACE=${{PRODUCTION_KUBE_NAMESPACE}}
       - DEBUG_CHART=true
       # NEED PGP Key in metadata of CD spec
       - CMD_PS=-f /codefresh/volume/example-voting-app/helm_vars/example-voting-app/production/worker/secrets.yaml
       - value_result_image_repository=r.cfcr.io/${{CF_ACCOUNT}}/example-voting-app/result
       - value_result_image_tag=master-${{CF_SHORT_REVISION}}
-      - value_result_image_pullSecret=codefresh-generated-r.cfcr.io-cfcr-${{KUBE_NAMESPACE}}
+      - value_result_image_pullSecret=codefresh-generated-r.cfcr.io-cfcr-${{PRODUCTION_KUBE_NAMESPACE}}
       - value_vote_image_repository=r.cfcr.io/${{CF_ACCOUNT}}/example-voting-app/vote
       - value_vote_image_tag=master-${{CF_SHORT_REVISION}}
-      - value_vote_image_pullSecret=codefresh-generated-r.cfcr.io-cfcr-${{KUBE_NAMESPACE}}
+      - value_vote_image_pullSecret=codefresh-generated-r.cfcr.io-cfcr-${{PRODUCTION_KUBE_NAMESPACE}}
       - value_worker_image_repository=r.cfcr.io/${{CF_ACCOUNT}}/example-voting-app/worker
       - value_worker_image_tag=master-${{CF_SHORT_REVISION}}
-      - value_worker_image_pullSecret=codefresh-generated-r.cfcr.io-cfcr-${{KUBE_NAMESPACE}}
+      - value_worker_image_pullSecret=codefresh-generated-r.cfcr.io-cfcr-${{PRODUCTION_KUBE_NAMESPACE}}
     commands:
       - echo -e "${{GPG_SEC}}" > mygpgkey_sec.asc
       - gpg --import --allow-secret-key-import mygpgkey_sec.asc
