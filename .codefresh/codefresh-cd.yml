@@ -76,10 +76,22 @@ steps:
           isPRsynchronized: "'${{CF_PULL_REQUEST_ACTION}}' == 'synchronize'"
           isPRreopen: "'${{CF_PULL_REQUEST_ACTION}}' == 'reopened'"
   RunPRDVTs:
+    title: Running Deployment Verification Tests
     stage: "pull request"
-    image: 'codefresh/cli:latest'
-    commands:
-      - codefresh run example-voting-app/dvts -b='${{CF_BRANCH}}' -s='${{CF_REVISION}}' -v CF_REPO_OWNER=${{CF_REPO_OWNER}} -v CF_REPO_NAME=${{CF_REPO_NAME}} -v CF_REVISION=${{CF_REVISION}} -v KUBE_CONTEXT='${{KUBE_CONTEXT}}' -v NAMESPACE=${{KUBE_NAMESPACE}} -v SERVICES='vote result' -v RELEASE_NAME='${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_PULL_REQUEST_NUMBER}}-${{CF_REPO_NAME}}' -v TEST_IMAGE='example-voting-app/tests:${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_SHORT_REVISION}}'
+    type: codefresh-run
+    arguments:
+      PIPELINE_ID: ${{CF_ACCOUNT}}/${{CF_REPO_NAME}}/dvts
+      TRIGGER_ID: ${{CF_REPO_NAME}}
+      BRANCH: ${{CF_BRANCH}}
+      SHA: ${{CF_REVISION}}
+      ENABLE_NOTIFICATIONS: true
+      CONTEXT:
+        - github
+      VARIABLE:
+        - KUBE_CONTEXT=${{PR_KUBE_CONTEXT}}
+        - NAMESPACE=${{PR_KUBE_NAMESPACE}}
+        - RELEASE_NAME=${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_PULL_REQUEST_NUMBER}}-eva
+        - TEST_IMAGE=example-voting-app/tests:${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_SHORT_REVISION}}
     when:
       condition:
         any:
@@ -134,9 +146,20 @@ steps:
   RunStagingDVTs:
     stage: staging
     title: Running DVTS on Staging Release
-    image: 'codefresh/cli:latest'
-    commands:
-      - codefresh run example-voting-app/dvts -b='${{CF_BRANCH}}' -s='${{CF_REVISION}}' -v CF_REPO_OWNER=${{CF_REPO_OWNER}} -v CF_REPO_NAME=${{CF_REPO_NAME}} -v CF_REVISION=${{CF_REVISION}} -v KUBE_CONTEXT='${{KUBE_CONTEXT}}' -v NAMESPACE=${{KUBE_NAMESPACE}} -v SERVICES='vote result' -v RELEASE_NAME='staging-example-voting-app' -v TEST_IMAGE='example-voting-app/tests:${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_SHORT_REVISION}}'
+    type: codefresh-run
+    arguments:
+      PIPELINE_ID: ${{CF_ACCOUNT}}/${{CF_REPO_NAME}}/dvts
+      TRIGGER_ID: ${{CF_REPO_NAME}}
+      BRANCH: ${{CF_BRANCH}}
+      SHA: ${{CF_REVISION}}
+      ENABLE_NOTIFICATIONS: true
+      CONTEXT:
+        - github
+      VARIABLE:
+        - KUBE_CONTEXT=${{STAGING_KUBE_CONTEXT}}
+        - NAMESPACE=${{STAGING_KUBE_NAMESPACE}}
+        - RELEASE_NAME=${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_PULL_REQUEST_NUMBER}}-eva
+        - TEST_IMAGE=example-voting-app/tests:${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_SHORT_REVISION}}
     when:
       condition:
         any:
@@ -186,9 +209,20 @@ steps:
   RunProductionDVTs:
     stage: production
     title: Running DVTS on Production Release
-    image: 'codefresh/cli:latest'
-    commands:
-      - codefresh run example-voting-app/dvts -b='${{CF_BRANCH}}' -s='${{CF_REVISION}}' -v CF_REPO_OWNER=${{CF_REPO_OWNER}} -v CF_REPO_NAME=${{CF_REPO_NAME}} -v CF_REVISION=${{CF_REVISION}} -v KUBE_CONTEXT='${{KUBE_CONTEXT}}' -v NAMESPACE=${{KUBE_NAMESPACE}} -v SERVICES='vote result' -v RELEASE_NAME='production-example-voting-app' -v TEST_IMAGE='example-voting-app/tests:${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_SHORT_REVISION}}'
+    type: codefresh-run
+    arguments:
+      PIPELINE_ID: ${{CF_ACCOUNT}}/${{CF_REPO_NAME}}/dvts
+      TRIGGER_ID: ${{CF_REPO_NAME}}
+      BRANCH: ${{CF_BRANCH}}
+      SHA: ${{CF_REVISION}}
+      ENABLE_NOTIFICATIONS: true
+      CONTEXT:
+        - github
+      VARIABLE:
+        - KUBE_CONTEXT=${{PRODUCTION_KUBE_CONTEXT}}
+        - NAMESPACE=${{PRODUCTION_KUBE_NAMESPACE}}
+        - RELEASE_NAME=${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_PULL_REQUEST_NUMBER}}-eva
+        - TEST_IMAGE=example-voting-app/tests:${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_SHORT_REVISION}}
     when:
       condition:
         all:
