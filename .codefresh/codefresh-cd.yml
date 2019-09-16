@@ -158,7 +158,7 @@ steps:
       VARIABLE:
         - KUBE_CONTEXT=${{STAGING_KUBE_CONTEXT}}
         - NAMESPACE=${{STAGING_KUBE_NAMESPACE}}
-        - RELEASE_NAME=${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_PULL_REQUEST_NUMBER}}-eva
+        - RELEASE_NAME=staging-eva
         - TEST_IMAGE=example-voting-app/tests:${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_SHORT_REVISION}}
     when:
       condition:
@@ -221,7 +221,7 @@ steps:
       VARIABLE:
         - KUBE_CONTEXT=${{PRODUCTION_KUBE_CONTEXT}}
         - NAMESPACE=${{PRODUCTION_KUBE_NAMESPACE}}
-        - RELEASE_NAME=${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_PULL_REQUEST_NUMBER}}-eva
+        - RELEASE_NAME=production-eva
         - TEST_IMAGE=example-voting-app/tests:${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_SHORT_REVISION}}
     when:
       condition:
