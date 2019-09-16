@@ -80,7 +80,7 @@ steps:
     stage: "pull request"
     type: codefresh-run
     arguments:
-      PIPELINE_ID: ${{CF_ACCOUNT}}/${{CF_REPO_NAME}}/dvts
+      PIPELINE_ID: ${{CF_REPO_NAME}}/dvts
       TRIGGER_ID: ${{CF_REPO_NAME}}
       BRANCH: ${{CF_BRANCH}}
       SHA: ${{CF_REVISION}}
@@ -148,7 +148,7 @@ steps:
     title: Running DVTS on Staging Release
     type: codefresh-run
     arguments:
-      PIPELINE_ID: ${{CF_ACCOUNT}}/${{CF_REPO_NAME}}/dvts
+      PIPELINE_ID: ${{CF_REPO_NAME}}/dvts
       TRIGGER_ID: ${{CF_REPO_NAME}}
       BRANCH: ${{CF_BRANCH}}
       SHA: ${{CF_REVISION}}
@@ -211,7 +211,7 @@ steps:
     title: Running DVTS on Production Release
     type: codefresh-run
     arguments:
-      PIPELINE_ID: ${{CF_ACCOUNT}}/${{CF_REPO_NAME}}/dvts
+      PIPELINE_ID: ${{CF_REPO_NAME}}/dvts
       TRIGGER_ID: ${{CF_REPO_NAME}}
       BRANCH: ${{CF_BRANCH}}
       SHA: ${{CF_REVISION}}
