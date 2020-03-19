@@ -1,6 +1,7 @@
 version: '1.0'
 stages:
   - build
+  - push
   - "pull request"
   - staging
   - production
@@ -44,6 +45,36 @@ steps:
         dockerfile: Dockerfile
         tag: '${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_SHORT_REVISION}}'
     fail_fast: true
+  PushingToGCR:
+    type: parallel
+    stage: push
+    steps:
+    step_name:
+      PushResultImage:
+        title: Pushing Result Image to GCR
+        type: push
+        candidate: ${{BuildResultImage}}
+        registry: gcr
+        tag: '${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_SHORT_REVISION}}'
+      PushVoteImage:
+        title: Pushing Vote Image to GCR
+        type: push
+        candidate: ${{BuildVoteImage}}
+        registry: gcr
+        tag: '${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_SHORT_REVISION}}'
+      PushWorkerImage:
+        title: Pushing Worker Image to GCR
+        type: push
+        candidate: ${{BuildWorkerImage}}
+        registry: gcr
+        tag: '${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_SHORT_REVISION}}'
+      PushTestImage:
+        title: Pushing Test Image to GCR
+        type: push
+        candidate: ${{BuildTestImage}}
+        registry: gcr
+        tag: '${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_SHORT_REVISION}}'
+    fail_fast: true
   DeployPRRelease:
     stage: "pull request"
     title: Create Ephemeral Helm Release for Pull Request
@@ -58,13 +89,10 @@ steps:
       - CMD_PS=-f helm_vars/example-voting-app/pull-requests/worker/secrets.yaml
       - value_result_image_repository=r.cfcr.io/${{CF_ACCOUNT}}/example-voting-app/result
       - value_result_image_tag=${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_SHORT_REVISION}}
-      - value_result_image_pullSecret=codefresh-generated-r.cfcr.io-cfcr-${{PR_KUBE_NAMESPACE}}
       - value_vote_image_repository=r.cfcr.io/${{CF_ACCOUNT}}/example-voting-app/vote
       - value_vote_image_tag=${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_SHORT_REVISION}}
-      - value_vote_image_pullSecret=codefresh-generated-r.cfcr.io-cfcr-${{PR_KUBE_NAMESPACE}}
       - value_worker_image_repository=r.cfcr.io/${{CF_ACCOUNT}}/example-voting-app/worker
       - value_worker_image_tag=${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_SHORT_REVISION}}
-      - value_worker_image_pullSecret=codefresh-generated-r.cfcr.io-cfcr-${{PR_KUBE_NAMESPACE}}
     commands:
       - echo -e "${{GPG_SEC}}" > mygpgkey_sec.asc
       - gpg --import --allow-secret-key-import mygpgkey_sec.asc
@@ -127,13 +155,10 @@ steps:
       - CMD_PS=-f /codefresh/volume/example-voting-app/helm_vars/example-voting-app/staging/worker/secrets.yaml
       - value_result_image_repository=r.cfcr.io/${{CF_ACCOUNT}}/example-voting-app/result
       - value_result_image_tag=master-${{CF_SHORT_REVISION}}
-      - value_result_image_pullSecret=codefresh-generated-r.cfcr.io-cfcr-${{STAGING_KUBE_NAMESPACE}}
       - value_vote_image_repository=r.cfcr.io/${{CF_ACCOUNT}}/example-voting-app/vote
       - value_vote_image_tag=master-${{CF_SHORT_REVISION}}
-      - value_vote_image_pullSecret=codefresh-generated-r.cfcr.io-cfcr-${{STAGING_KUBE_NAMESPACE}}
       - value_worker_image_repository=r.cfcr.io/${{CF_ACCOUNT}}/example-voting-app/worker
       - value_worker_image_tag=master-${{CF_SHORT_REVISION}}
-      - value_worker_image_pullSecret=codefresh-generated-r.cfcr.io-cfcr-${{STAGING_KUBE_NAMESPACE}}
     commands:
       - echo -e "${{GPG_SEC}}" > mygpgkey_sec.asc
       - gpg --import --allow-secret-key-import mygpgkey_sec.asc
@@ -190,13 +215,10 @@ steps:
       - CMD_PS=-f /codefresh/volume/example-voting-app/helm_vars/example-voting-app/production/worker/secrets.yaml
       - value_result_image_repository=r.cfcr.io/${{CF_ACCOUNT}}/example-voting-app/result
       - value_result_image_tag=master-${{CF_SHORT_REVISION}}
-      - value_result_image_pullSecret=codefresh-generated-r.cfcr.io-cfcr-${{PRODUCTION_KUBE_NAMESPACE}}
       - value_vote_image_repository=r.cfcr.io/${{CF_ACCOUNT}}/example-voting-app/vote
       - value_vote_image_tag=master-${{CF_SHORT_REVISION}}
-      - value_vote_image_pullSecret=codefresh-generated-r.cfcr.io-cfcr-${{PRODUCTION_KUBE_NAMESPACE}}
       - value_worker_image_repository=r.cfcr.io/${{CF_ACCOUNT}}/example-voting-app/worker
       - value_worker_image_tag=master-${{CF_SHORT_REVISION}}
-      - value_worker_image_pullSecret=codefresh-generated-r.cfcr.io-cfcr-${{PRODUCTION_KUBE_NAMESPACE}}
     commands:
       - echo -e "${{GPG_SEC}}" > mygpgkey_sec.asc
       - gpg --import --allow-secret-key-import mygpgkey_sec.asc
