@@ -125,7 +125,7 @@ steps:
   PushChartToHelmRepository:
     stage: staging
     title: Push Helm Chart to Repository
-    image: dustinvanbuskirk/cfstep-helm:demo
+    image: codefresh/cfstep-helm:3.0.1
     environment:
       - ACTION=push
       - CHART_REF=example-voting-app
