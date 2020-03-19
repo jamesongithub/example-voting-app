@@ -49,7 +49,6 @@ steps:
     type: parallel
     stage: push
     steps:
-    step_name:
       PushResultImage:
         title: Pushing Result Image to GCR
         type: push
