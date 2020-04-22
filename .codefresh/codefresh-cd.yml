@@ -171,9 +171,7 @@ steps:
     env:
       name: staging
       endpoints:
-        - name: vote
-          url: http://35.230.106.103/
-        - name: result
+        - name: app
           url: http://35.230.106.103/
       type: helm-release
       change: staging deployment
@@ -240,10 +238,8 @@ steps:
     env:
       name: production
       endpoints:
-        - name: vote
+        - name: app
           url: http://34.83.53.241/
-        - name: result
-          url: http://34.83.168.0/
       type: helm-release
       change: production deployment
       filters:
