@@ -101,7 +101,11 @@ steps:
           isPRreopen: "'${{CF_PULL_REQUEST_ACTION}}' == 'reopened'"
     env:
       name: pull-requests
+      type: kubernetes
       change: pr environment created
+      filters:
+        - cluster: sales-dev@codefresh-sa
+          namespace: pull-requests   
   RunPRDVTs:
     title: Running Deployment Verification Tests
     stage: "pull request"
@@ -166,7 +170,14 @@ steps:
           prodRelease: "'${{CF_PRERELEASE_FLAG}}' == 'false'"
     env:
       name: staging
+      endpoints:
+        - name: app
+          url: http://35.230.106.103/
+      type: helm-release
       change: staging deployment
+      filters:
+        - cluster: sales-dev@codefresh-sa
+          releaseName: staging-eva
   RunStagingDVTs:
     stage: staging
     title: Running DVTS on Staging Release
@@ -226,7 +237,14 @@ steps:
         - approved
     env:
       name: production
+      endpoints:
+        - name: app
+          url: http://34.83.53.241/
+      type: helm-release
       change: production deployment
+      filters:
+        - cluster: sales-dev@codefresh-sa
+          releaseName: production-eva
   RunProductionDVTs:
     stage: production
     title: Running DVTS on Production Release
