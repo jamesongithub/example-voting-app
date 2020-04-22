@@ -170,11 +170,6 @@ steps:
           prodRelease: "'${{CF_PRERELEASE_FLAG}}' == 'false'"
     env:
       name: staging
-      endpoints:
-        - name: vote
-          url: http://35.230.106.103/
-        - name: result
-          url: http://35.230.106.103/
       type: helm-release
       change: staging deployment
       filters:
@@ -239,11 +234,6 @@ steps:
         - approved
     env:
       name: production
-      endpoints:
-        - name: vote
-          url: http://34.83.53.241/
-        - name: result
-          url: http://34.83.168.0/
       type: helm-release
       change: production deployment
       filters:
