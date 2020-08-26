@@ -74,6 +74,43 @@ steps:
         registry: gcr
         tag: '${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_SHORT_REVISION}}'
     fail_fast: true
+  PrismaCloudScanning:
+    type: parallel
+    stage: security
+    steps:
+      PrismaCloudImageScan:
+        type: prisma-cloud
+        arguments:
+          IMAGE_NAME: codefresh-sa/result
+          IMAGE_TAG: ${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_SHORT_REVISION}}
+          PC_HOSTNAME: ${{PC_HOSTNAME}}
+          PC_PORT: ${{PC_PORT}}
+          PC_USERNAME: ${{PC_USERNAME}}
+          PC_PASSWORD: ${{PC_PASSWORD}}
+          PC_PROTOCOL: ${{PC_PROTOCOL}}
+          REGISTRY: gcr.io
+      PrismaCloudImageScan:
+        type: prisma-cloud
+        arguments:
+          IMAGE_NAME: codefresh-sa/vote
+          IMAGE_TAG: ${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_SHORT_REVISION}}
+          PC_HOSTNAME: ${{PC_HOSTNAME}}
+          PC_PORT: ${{PC_PORT}}
+          PC_USERNAME: ${{PC_USERNAME}}
+          PC_PASSWORD: ${{PC_PASSWORD}}
+          PC_PROTOCOL: ${{PC_PROTOCOL}}
+          REGISTRY: gcr.io
+      PrismaCloudImageScan:
+        type: prisma-cloud
+        arguments:
+          IMAGE_NAME: codefresh-sa/worker
+          IMAGE_TAG: ${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_SHORT_REVISION}}
+          PC_HOSTNAME: ${{PC_HOSTNAME}}
+          PC_PORT: ${{PC_PORT}}
+          PC_USERNAME: ${{PC_USERNAME}}
+          PC_PASSWORD: ${{PC_PASSWORD}}
+          PC_PROTOCOL: ${{PC_PROTOCOL}}
+          REGISTRY: gcr.io
   DeployPRRelease:
     stage: "pull request"
     title: Create Ephemeral Helm Release for Pull Request

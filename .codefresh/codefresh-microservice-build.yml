@@ -13,3 +13,14 @@ steps:
     working_directory: ./${{MICROSERVICE}}/
     tag: '${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_SHORT_REVISION}}'
     dockerfile: Dockerfile
+  PrismaCloudImageScan:
+    type: prisma-cloud
+    arguments:
+      IMAGE_NAME: codefresh-sa/${{MICROSERVICE}}
+      IMAGE_TAG: ${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_SHORT_REVISION}}
+      PC_HOSTNAME: ${{PC_HOSTNAME}}
+      PC_PORT: ${{PC_PORT}}
+      PC_USERNAME: ${{PC_USERNAME}}
+      PC_PASSWORD: ${{PC_PASSWORD}}
+      PC_PROTOCOL: ${{PC_PROTOCOL}}
+      REGISTRY: gcr.io
