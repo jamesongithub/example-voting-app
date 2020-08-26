@@ -2,6 +2,7 @@ version: '1.0'
 stages:
   - build
   - push
+  - security
   - "pull request"
   - staging
   - production
