@@ -13,6 +13,12 @@ steps:
     working_directory: ./${{MICROSERVICE}}/
     tag: '${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_SHORT_REVISION}}'
     dockerfile: Dockerfile
+  PushDockerImage:
+    title: Pushing Result Image to GCR
+    type: push
+    candidate: ${{BuildingDockerImage}}
+    registry: gcr
+    tag: '${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_SHORT_REVISION}}'
   PrismaCloudImageScan:
     type: prisma-cloud
     arguments:
