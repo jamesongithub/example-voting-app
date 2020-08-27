@@ -2,6 +2,7 @@ version: '1.0'
 stages:
   - build
   - push
+  - security
   - "pull request"
   - staging
   - production
@@ -74,6 +75,43 @@ steps:
         registry: gcr
         tag: '${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_SHORT_REVISION}}'
     fail_fast: true
+  PrismaCloudScanning:
+    type: parallel
+    stage: security
+    steps:
+      PrismaCloudResultImageScan:
+        type: prisma-cloud
+        arguments:
+          IMAGE_NAME: codefresh-sa/example-voting-app/result
+          IMAGE_TAG: ${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_SHORT_REVISION}}
+          PC_HOSTNAME: ${{PC_HOSTNAME}}
+          PC_PORT: ${{PC_PORT}}
+          PC_USERNAME: ${{PC_USERNAME}}
+          PC_PASSWORD: ${{PC_PASSWORD}}
+          PC_PROTOCOL: ${{PC_PROTOCOL}}
+          REGISTRY: gcr.io
+      PrismaCloudVoteImageScan:
+        type: prisma-cloud
+        arguments:
+          IMAGE_NAME: codefresh-sa/example-voting-app/vote
+          IMAGE_TAG: ${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_SHORT_REVISION}}
+          PC_HOSTNAME: ${{PC_HOSTNAME}}
+          PC_PORT: ${{PC_PORT}}
+          PC_USERNAME: ${{PC_USERNAME}}
+          PC_PASSWORD: ${{PC_PASSWORD}}
+          PC_PROTOCOL: ${{PC_PROTOCOL}}
+          REGISTRY: gcr.io
+      PrismaCloudWorkerImageScan:
+        type: prisma-cloud
+        arguments:
+          IMAGE_NAME: codefresh-sa/example-voting-app/worker
+          IMAGE_TAG: ${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_SHORT_REVISION}}
+          PC_HOSTNAME: ${{PC_HOSTNAME}}
+          PC_PORT: ${{PC_PORT}}
+          PC_USERNAME: ${{PC_USERNAME}}
+          PC_PASSWORD: ${{PC_PASSWORD}}
+          PC_PROTOCOL: ${{PC_PROTOCOL}}
+          REGISTRY: gcr.io
   DeployPRRelease:
     stage: "pull request"
     title: Create Ephemeral Helm Release for Pull Request
