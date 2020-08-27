@@ -79,7 +79,7 @@ steps:
     type: parallel
     stage: security
     steps:
-      PrismaCloudImageScan:
+      PrismaCloudResultImageScan:
         type: prisma-cloud
         arguments:
           IMAGE_NAME: codefresh-sa/result
@@ -90,7 +90,7 @@ steps:
           PC_PASSWORD: ${{PC_PASSWORD}}
           PC_PROTOCOL: ${{PC_PROTOCOL}}
           REGISTRY: gcr.io
-      PrismaCloudImageScan:
+      PrismaCloudVoteImageScan:
         type: prisma-cloud
         arguments:
           IMAGE_NAME: codefresh-sa/vote
@@ -101,7 +101,7 @@ steps:
           PC_PASSWORD: ${{PC_PASSWORD}}
           PC_PROTOCOL: ${{PC_PROTOCOL}}
           REGISTRY: gcr.io
-      PrismaCloudImageScan:
+      PrismaCloudWorkerImageScan:
         type: prisma-cloud
         arguments:
           IMAGE_NAME: codefresh-sa/worker
