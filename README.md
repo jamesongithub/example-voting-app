@@ -1,6 +1,8 @@
 Example Voting App (GitOps + Helm Demo Env)
 ----
 
+* DEPRECATED - New templates coming soon.
+
 PreReqs:
 
 * [Codefresh Account](https://g.codefresh.io/signup)
