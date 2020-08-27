@@ -82,7 +82,7 @@ steps:
       PrismaCloudResultImageScan:
         type: prisma-cloud
         arguments:
-          IMAGE_NAME: codefresh-sa/result
+          IMAGE_NAME: codefresh-sa/example-voting-app/result
           IMAGE_TAG: ${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_SHORT_REVISION}}
           PC_HOSTNAME: ${{PC_HOSTNAME}}
           PC_PORT: ${{PC_PORT}}
@@ -93,7 +93,7 @@ steps:
       PrismaCloudVoteImageScan:
         type: prisma-cloud
         arguments:
-          IMAGE_NAME: codefresh-sa/vote
+          IMAGE_NAME: codefresh-sa/example-voting-app/vote
           IMAGE_TAG: ${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_SHORT_REVISION}}
           PC_HOSTNAME: ${{PC_HOSTNAME}}
           PC_PORT: ${{PC_PORT}}
@@ -104,7 +104,7 @@ steps:
       PrismaCloudWorkerImageScan:
         type: prisma-cloud
         arguments:
-          IMAGE_NAME: codefresh-sa/worker
+          IMAGE_NAME: codefresh-sa/example-voting-app/worker
           IMAGE_TAG: ${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_SHORT_REVISION}}
           PC_HOSTNAME: ${{PC_HOSTNAME}}
           PC_PORT: ${{PC_PORT}}
