@@ -46,72 +46,72 @@ steps:
         dockerfile: Dockerfile
         tag: '${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_SHORT_REVISION}}'
     fail_fast: true
-  PushingToGCR:
+  PushingToDockerRegistry:
     type: parallel
     stage: push
     steps:
       PushResultImage:
-        title: Pushing Result Image to GCR
+        title: Pushing Result Image to Docker Registry
         type: push
         candidate: ${{BuildResultImage}}
-        registry: gcr
+        registry: dockerhub
         tag: '${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_SHORT_REVISION}}'
       PushVoteImage:
-        title: Pushing Vote Image to GCR
+        title: Pushing Vote Image to Docker Registry
         type: push
         candidate: ${{BuildVoteImage}}
-        registry: gcr
+        registry: dockerhub
         tag: '${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_SHORT_REVISION}}'
       PushWorkerImage:
-        title: Pushing Worker Image to GCR
+        title: Pushing Worker Image to Docker Registry
         type: push
         candidate: ${{BuildWorkerImage}}
-        registry: gcr
+        registry: dockerhub
         tag: '${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_SHORT_REVISION}}'
       PushTestImage:
-        title: Pushing Test Image to GCR
+        title: Pushing Test Image to Docker Registry
         type: push
         candidate: ${{BuildTestImage}}
-        registry: gcr
+        registry: dockerhub
         tag: '${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_SHORT_REVISION}}'
     fail_fast: true
-  PrismaCloudScanning:
-    type: parallel
-    stage: security
-    steps:
-      PrismaCloudResultImageScan:
-        type: prisma-cloud
-        arguments:
-          IMAGE_NAME: codefresh-sa/example-voting-app/result
-          IMAGE_TAG: ${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_SHORT_REVISION}}
-          PC_HOSTNAME: ${{PC_HOSTNAME}}
-          PC_PORT: ${{PC_PORT}}
-          PC_USERNAME: ${{PC_USERNAME}}
-          PC_PASSWORD: ${{PC_PASSWORD}}
-          PC_PROTOCOL: ${{PC_PROTOCOL}}
-          REGISTRY: gcr.io
-      PrismaCloudVoteImageScan:
-        type: prisma-cloud
-        arguments:
-          IMAGE_NAME: codefresh-sa/example-voting-app/vote
-          IMAGE_TAG: ${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_SHORT_REVISION}}
-          PC_HOSTNAME: ${{PC_HOSTNAME}}
-          PC_PORT: ${{PC_PORT}}
-          PC_USERNAME: ${{PC_USERNAME}}
-          PC_PASSWORD: ${{PC_PASSWORD}}
-          PC_PROTOCOL: ${{PC_PROTOCOL}}
-          REGISTRY: gcr.io
-      PrismaCloudWorkerImageScan:
-        type: prisma-cloud
-        arguments:
-          IMAGE_NAME: codefresh-sa/example-voting-app/worker
-          IMAGE_TAG: ${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_SHORT_REVISION}}
-          PC_HOSTNAME: ${{PC_HOSTNAME}}
-          PC_PORT: ${{PC_PORT}}
-          PC_USERNAME: ${{PC_USERNAME}}
-          PC_PASSWORD: ${{PC_PASSWORD}}
-          PC_PROTOCOL: ${{PC_PROTOCOL}}
-          REGISTRY: gcr.io
+#  PrismaCloudScanning:
+#    type: parallel
+#    stage: security
+#    steps:
+#      PrismaCloudResultImageScan:
+#        type: prisma-cloud
+#        arguments:
+#          IMAGE_NAME: codefresh-sa/example-voting-app/result
+#          IMAGE_TAG: ${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_SHORT_REVISION}}
+#          PC_HOSTNAME: ${{PC_HOSTNAME}}
+#          PC_PORT: ${{PC_PORT}}
+#          PC_USERNAME: ${{PC_USERNAME}}
+#          PC_PASSWORD: ${{PC_PASSWORD}}
+#          PC_PROTOCOL: ${{PC_PROTOCOL}}
+#          REGISTRY: gcr.io
+#      PrismaCloudVoteImageScan:
+#        type: prisma-cloud
+#        arguments:
+#          IMAGE_NAME: codefresh-sa/example-voting-app/vote
+#          IMAGE_TAG: ${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_SHORT_REVISION}}
+#          PC_HOSTNAME: ${{PC_HOSTNAME}}
+#          PC_PORT: ${{PC_PORT}}
+#          PC_USERNAME: ${{PC_USERNAME}}
+#          PC_PASSWORD: ${{PC_PASSWORD}}
+#          PC_PROTOCOL: ${{PC_PROTOCOL}}
+#          REGISTRY: gcr.io
+#      PrismaCloudWorkerImageScan:
+#        type: prisma-cloud
+#        arguments:
+#          IMAGE_NAME: codefresh-sa/example-voting-app/worker
+#          IMAGE_TAG: ${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_SHORT_REVISION}}
+#          PC_HOSTNAME: ${{PC_HOSTNAME}}
+#          PC_PORT: ${{PC_PORT}}
+#          PC_USERNAME: ${{PC_USERNAME}}
+#          PC_PASSWORD: ${{PC_PASSWORD}}
+#          PC_PROTOCOL: ${{PC_PROTOCOL}}
+#          REGISTRY: gcr.io
   DeployPRRelease:
     stage: "pull request"
     title: Create Ephemeral Helm Release for Pull Request
