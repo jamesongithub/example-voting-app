@@ -4,7 +4,10 @@ steps:
     image: alpine
     commands:
       - cf_export SERVICES="result vote"
-      - cf_export KUBE_CONTEXT=KUBERNETES_CLUSTER_NAME
+      - cf_export KUBE_CONTEXT=DEV-AZURE
+      - cf_export KUBE_NAMESPACE=codefresh
+      - cf_export PR_KUBE_CONTEXT=DEV-AZURE
+      - cf_export PR_KUBE_NAMESPACE=codefresh-pr
   main_clone:
     title: Cloning main repository...
     type: git-clone

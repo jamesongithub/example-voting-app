@@ -127,7 +127,7 @@ steps:
     image: codefresh/cli
     commands:
       - codefresh generate image-pull-secret --cluster ${{KUBE_CONTEXT}} --namespace
-        ${{KUBERNETES_NAMESPACE}} --registry dockerhub
+        ${{KUBE_NAMESPACE}} --registry dockerhub
       - codefresh generate image-pull-secret --cluster ${{PR_KUBE_CONTEXT}} --namespace
         ${{PR_KUBE_NAMESPACE}} --registry dockerhub
 
