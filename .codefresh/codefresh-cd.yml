@@ -10,11 +10,10 @@ steps:
   SetPipelineVars:
     image: alpine
     commands:
-#      - cf_export KUBE_CONTEXT=DEV-AZURE
-      - cf_export KUBE_CONTEXT=prd-aws
+      - cf_export KUBE_CLUSTER=prd-aws
+      - cf_export KUBE_CONTEXT=${{KUBE_CLUSTER}}
       - cf_export KUBE_NAMESPACE=codefresh
-#      - cf_export PR_KUBE_CONTEXT=DEV-AZURE
-      - cf_export PR_KUBE_CONTEXT=prd-aws
+      - cf_export PR_KUBE_CONTEXT=${{KUBE_CLUSTER}}
       - cf_export PR_KUBE_NAMESPACE=codefresh-pr
   main_clone:
     title: Cloning main repository...
@@ -325,4 +324,3 @@ steps:
       condition:
         all:
           prodRelease: "'${{CF_PRERELEASE_FLAG}}' == 'false'"
-
