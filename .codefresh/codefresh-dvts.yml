@@ -1,5 +1,10 @@
 version: '1.0'
 steps:
+  SetPipelineVars:
+    image: alpine
+    commands:
+      - cf_export SERVICES="result vote"
+      - cf_export KUBE_CONTEXT=KUBERNETES_CLUSTER_NAME
   main_clone:
     title: Cloning main repository...
     type: git-clone

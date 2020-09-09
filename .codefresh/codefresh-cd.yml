@@ -116,6 +116,14 @@ steps:
 #          PC_PASSWORD: ${{PC_PASSWORD}}
 #          PC_PROTOCOL: ${{PC_PROTOCOL}}
 #          REGISTRY: gcr.io
+  CreateImagePullSecret:
+    image: codefresh/cli
+    commands:
+      - codefresh generate image-pull-secret --cluster '${{KUBERNETES_CLUSTER_NAME}}' --namespace
+        ${{KUBERNETES_NAMESPACE}} --registry dockerhub
+      - codefresh generate image-pull-secret --cluster '${{PR_KUBE_CONTEXT}}' --namespace
+        ${{PR_KUBE_NAMESPACE}} --registry dockerhub
+
   DeployPRRelease:
     stage: "pull request"
     title: Create Ephemeral Helm Release for Pull Request
