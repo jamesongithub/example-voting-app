@@ -1,5 +1,9 @@
 version: '1.0'
 steps:
+  SetPipelineVars:
+    image: alpine
+    commands:
+      - cf_export KUBE_CONTEXT=DEV-AZURE
   main_clone:
     title: Cloning main repository...
     type: git-clone
