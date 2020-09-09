@@ -5,7 +5,7 @@ keywords:
 - codefresh
 - kubernetes
 - example-voting-app
-version: 1.0.3
+version: 1.0.4
 sources:
 - https://github.com/codefresh-io/example-voting-app
 maintainers:
