@@ -179,8 +179,7 @@ steps:
         - KUBE_CONTEXT=${{PR_KUBE_CONTEXT}}
         - NAMESPACE=${{PR_KUBE_NAMESPACE}}
         - RELEASE_NAME=${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_PULL_REQUEST_NUMBER}}-eva
-        - TEST_IMAGE=docker.io/jamesoverdocker/example-voting-app-tests:${{CF_BRANCH_TAG_NORMALIZED
-      - }}-${{CF_SHORT_REVISION}}
+        - TEST_IMAGE=docker.io/jamesoverdocker/example-voting-app-tests:${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_SHORT_REVISION}}
     when:
       condition:
         any:
@@ -252,7 +251,7 @@ steps:
         - KUBE_CONTEXT=${{STAGING_KUBE_CONTEXT}}
         - NAMESPACE=${{STAGING_KUBE_NAMESPACE}}
         - RELEASE_NAME=staging-eva
-        - TEST_IMAGE=docker.io/jamesoverdocker/example-voting-app-tests:${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_SHORT_REVISION}}
+        - TEST_IMAGE="docker.io/jamesoverdocker/example-voting-app-tests:${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_SHORT_REVISION}}"
     when:
       condition:
         any:
@@ -319,7 +318,7 @@ steps:
         - KUBE_CONTEXT=${{PRODUCTION_KUBE_CONTEXT}}
         - NAMESPACE=${{PRODUCTION_KUBE_NAMESPACE}}
         - RELEASE_NAME=production-eva
-        - TEST_IMAGE=example-voting-app/tests:${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_SHORT_REVISION}}
+        - TEST_IMAGE="docker.io/jamesoverdocker/example-voting-app-tests:${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_SHORT_REVISION}}"
     when:
       condition:
         all:
