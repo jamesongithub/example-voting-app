@@ -3,7 +3,8 @@ steps:
   SetPipelineVars:
     image: alpine
     commands:
-      - cf_export KUBE_CONTEXT=DEV-AZURE
+      - cf_export KUBE_CONTEXT=prd-aws
+#      - cf_export KUBE_CONTEXT=DEV-AZURE
       - cf_export NAMESPACE=codefresh-pr
   main_clone:
     title: Cloning main repository...
