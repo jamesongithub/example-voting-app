@@ -119,9 +119,9 @@ steps:
   CreateImagePullSecret:
     image: codefresh/cli
     commands:
-      - codefresh generate image-pull-secret --cluster '${{KUBERNETES_CLUSTER_NAME}}' --namespace
+      - codefresh generate image-pull-secret --cluster ${{KUBE_CONTEXT}} --namespace
         ${{KUBERNETES_NAMESPACE}} --registry dockerhub
-      - codefresh generate image-pull-secret --cluster '${{PR_KUBE_CONTEXT}}' --namespace
+      - codefresh generate image-pull-secret --cluster ${{PR_KUBE_CONTEXT}} --namespace
         ${{PR_KUBE_NAMESPACE}} --registry dockerhub
 
   DeployPRRelease:
