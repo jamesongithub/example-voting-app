@@ -7,6 +7,13 @@ stages:
   - staging
   - production
 steps:
+  SetPipelineVars:
+    image: alpine
+    commands:
+      - cf_export KUBE_CONTEXT=DEV-AZURE
+      - cf_export KUBE_NAMESPACE=codefresh
+      - cf_export PR_KUBE_CONTEXT=DEV-AZURE
+      - cf_export PR_KUBE_NAMESPACE=codefresh-pr
   main_clone:
     title: Cloning main repository...
     type: git-clone
@@ -116,6 +123,14 @@ steps:
 #          PC_PASSWORD: ${{PC_PASSWORD}}
 #          PC_PROTOCOL: ${{PC_PROTOCOL}}
 #          REGISTRY: gcr.io
+  CreateImagePullSecret:
+    image: codefresh/cli
+    commands:
+      - codefresh generate image-pull-secret --cluster ${{KUBE_CONTEXT}} --namespace
+        ${{KUBE_NAMESPACE}} --registry dockerhub
+      - codefresh generate image-pull-secret --cluster ${{PR_KUBE_CONTEXT}} --namespace
+        ${{PR_KUBE_NAMESPACE}} --registry dockerhub
+
   DeployPRRelease:
     stage: "pull request"
     title: Create Ephemeral Helm Release for Pull Request
@@ -154,7 +169,7 @@ steps:
     type: codefresh-run
     arguments:
       PIPELINE_ID: ${{CF_REPO_NAME}}/dvts
-      TRIGGER_ID: ${{CF_REPO_NAME}}
+      TRIGGER_ID: '${{CF_REPO_OWNER}}/${{CF_REPO_NAME}}/dvts'
       BRANCH: ${{CF_BRANCH}}
       SHA: ${{CF_REVISION}}
       ENABLE_NOTIFICATIONS: true
@@ -164,7 +179,7 @@ steps:
         - KUBE_CONTEXT=${{PR_KUBE_CONTEXT}}
         - NAMESPACE=${{PR_KUBE_NAMESPACE}}
         - RELEASE_NAME=${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_PULL_REQUEST_NUMBER}}-eva
-        - TEST_IMAGE=example-voting-app/tests:${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_SHORT_REVISION}}
+        - TEST_IMAGE=docker.io/jamesoverdocker/example-voting-app-tests:${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_SHORT_REVISION}}
     when:
       condition:
         any:
@@ -236,7 +251,7 @@ steps:
         - KUBE_CONTEXT=${{STAGING_KUBE_CONTEXT}}
         - NAMESPACE=${{STAGING_KUBE_NAMESPACE}}
         - RELEASE_NAME=staging-eva
-        - TEST_IMAGE=example-voting-app/tests:${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_SHORT_REVISION}}
+        - TEST_IMAGE="docker.io/jamesoverdocker/example-voting-app-tests:${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_SHORT_REVISION}}"
     when:
       condition:
         any:
@@ -303,7 +318,7 @@ steps:
         - KUBE_CONTEXT=${{PRODUCTION_KUBE_CONTEXT}}
         - NAMESPACE=${{PRODUCTION_KUBE_NAMESPACE}}
         - RELEASE_NAME=production-eva
-        - TEST_IMAGE=example-voting-app/tests:${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_SHORT_REVISION}}
+        - TEST_IMAGE="docker.io/jamesoverdocker/example-voting-app-tests:${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_SHORT_REVISION}}"
     when:
       condition:
         all:

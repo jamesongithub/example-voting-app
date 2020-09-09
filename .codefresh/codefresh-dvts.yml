@@ -1,5 +1,12 @@
 version: '1.0'
 steps:
+  SetPipelineVars:
+    image: alpine
+    commands:
+      - cf_export SERVICES="result vote"
+      - cf_export BROWSERS="chrome firefox"
+#      - cf_export KUBE_CONTEXT=DEV-AZURE
+#      - cf_export NAMESPACE=codefresh-pr
   main_clone:
     title: Cloning main repository...
     type: git-clone
