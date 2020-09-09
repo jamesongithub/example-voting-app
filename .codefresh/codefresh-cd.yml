@@ -154,7 +154,7 @@ steps:
     type: codefresh-run
     arguments:
       PIPELINE_ID: ${{CF_REPO_NAME}}/dvts
-      TRIGGER_ID: ${{CF_REPO_NAME}}
+      TRIGGER_ID: '${{CF_REPO_OWNER}}/${{CF_REPO_NAME}}/dvts'
       BRANCH: ${{CF_BRANCH}}
       SHA: ${{CF_REVISION}}
       ENABLE_NOTIFICATIONS: true
