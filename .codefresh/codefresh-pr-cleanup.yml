@@ -15,4 +15,4 @@ steps:
     image: dustinvanbuskirk/cfstep-helm-secrets:3.1.1-demo
     commands:
       - kubectl config use-context ${{KUBE_CONTEXT}}
-      - helm delete ${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_PULL_REQUEST_NUMBER}}-eva --purge
+      - helm uninstall ${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_PULL_REQUEST_NUMBER}}-eva
